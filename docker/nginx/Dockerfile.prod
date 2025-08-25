@@ -1,0 +1,4 @@
+ARG GIT_SHA_SHORT
+FROM ambimax/worklog-software-app:staging-${GIT_SHA_SHORT}
+
+COPY --chown=app:app docker/nginx/conf/default_prod.conf /etc/nginx/conf.d/default.conf

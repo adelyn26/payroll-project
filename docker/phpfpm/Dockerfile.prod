@@ -1,0 +1,59 @@
+FROM ambimax/php-8.1-bullseye:8.1.19 as build
+
+WORKDIR /var/www/html
+
+ARG ENV
+ARG APP_ID=1000
+
+RUN apt update \
+    && apt install -y git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -f -g "$APP_ID" app \
+    && useradd -g "$APP_ID" -u "$APP_ID" -d /var/www -s /bin/bash app || echo "User already exists."
+
+RUN mkdir -p /etc/nginx/html /var/www/html /sock \
+    && chown -R app:app /etc/nginx /var/www /usr/local/etc/php/conf.d /sock
+
+COPY docker/phpfpm/conf.d/php.ini /usr/local/etc/php/conf.d/zz-php.ini
+
+COPY --from=composer/composer:2.4.4-bin /composer /usr/local/bin/composer
+COPY src/bin ./bin
+COPY src/import ./import
+COPY src/config ./config
+COPY src/migrations ./migrations
+COPY src/public ./public
+COPY src/src ./src
+COPY src/templates ./templates
+COPY src/translations ./translations
+COPY src/composer.json ./
+COPY src/composer.lock ./
+COPY src/symfony.lock ./
+
+RUN touch .env
+
+RUN chown -R app:app .
+USER app:app
+
+RUN php -d memory_limit=3G /usr/local/bin/composer install --no-ansi -n --no-scripts --optimize-autoloader
+
+RUN DATABASE_URL="mysql://placeholder.local/app?serverVersion=8.0.36" bin/console assets:install
+
+
+FROM node:21-alpine3.19 as js-build
+
+WORKDIR /var/www/html
+
+COPY --from=build /var/www/html ./
+COPY src/assets ./assets
+COPY src/package.json ./
+COPY src/yarn.lock ./
+COPY src/webpack.config.js ./
+
+RUN yarn install
+RUN yarn dev
+
+
+FROM build
+
+COPY --from=js-build /var/www/html/public/build public/build

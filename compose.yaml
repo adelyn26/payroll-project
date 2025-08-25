@@ -1,0 +1,65 @@
+services:
+  phpfpm:
+    build:
+      context: .
+      dockerfile: docker/phpfpm/Dockerfile
+    restart: always
+    command: [ "php-fpm", "-F" ]
+    env_file:
+      - env/symfony.env
+      - env/db.env
+    volumes:
+      - ./src:/var/www/html
+      - appdata:/var/www/html/public/build
+      - ./composer.lock:/var/www/html/composer.lock
+      - ./composer.json:/var/www/html/composer.json
+    user: app
+  app:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        ENV: dev
+        fpm_image_name: ambimax/worklog-software-fpm:latest-production
+    restart: always
+    ports:
+      - "80:8000"
+      - "443:8443"
+    volumes:
+      - appdata:/var/www/html/public/build
+    depends_on:
+      - phpfpm
+  yarn:
+    build:
+      context: .
+      dockerfile: docker/yarn/Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src/assets:/var/www/html/assets
+      - appdata:/var/www/html/public/build
+    command: yarn watch
+    depends_on:
+      - phpfpm
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    image: mariadb:10.10
+    restart: always
+    command: --max_allowed_packet=64M
+      --optimizer_use_condition_selectivity=1
+      --optimizer_switch="rowid_filter=off"
+    ports:
+      - "3306:3306"
+    env_file: env/db.env
+    volumes:
+      - databasedata:/var/lib/mysql
+
+volumes:
+  appdata:
+  databasedata:
+
+
