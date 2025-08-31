@@ -1,0 +1,250 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.form-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(70, 69, 69, 0.1);
+  flex-direction: column;
+  align-items: center;
+  width: 20rem;
+  top: 12rem;
+  position: absolute;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+input, select {
+  width: 95%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+/* src/assets/navbar.css */
+.navbar {
+  background-color: #575757;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.menu li a {
+  color: white;
+  text-decoration: none;
+}
+.menu li a:hover {
+  text-decoration: underline;
+}
+.group_options{
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  left: 45rem;
+}
+.option-button{
+  position: relative;
+  display: flex;
+  width: 5rem;
+  gap: 1rem;
+}
+.ed-button{
+  background-color: #007BFF;
+
+}
+.de-button{
+  background-color: #f10d0d;
+}
+.detail-body{
+  position: relative;
+}
+.detail-card{
+  position: relative;
+  background: white;
+  padding: 8.5rem;
+  border-radius: 5rem;
+}
+.detail-buttons{
+  display: flex;
+  gap: 0.5rem;
+}
+.delete-detail-button{
+  background-color: red;
+}
+.delete-detail-button:hover{
+  background-color: #830b0b;
+}
+.detail-table{
+  background: white;
+  width: 60rem;
+  border-radius: 1.2rem;
+  padding: 1rem;
+}
+.create-employee-button{
+  margin-top: 20px;
+  width: 20%;
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  position: relative;
+  left: 46rem;
+}
+.edit-detail-button{
+  background-color: #ff8d00;
+}
+.edit-detail-button:hover{
+  background-color: #b6690d;
+
+}
+.card-create-employee{
+  display: flex;
+  justify-content: center;
+}
+.close-modal{
+  top: -1rem;
+  color: #000000;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: white;
+  width: 3rem;
+  position: absolute;
+  left: 20rem;
+}
+.modal-overlay{
+  position: fixed;
+  backdrop-filter: blur(1px);
+  inset: 0;
+  justify-content: center;
+}
+.button-save-employee{
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.submit-employee{
+  width: 30%;
+  position: relative;
+}
+.card-edit-employee{
+  display: flex;
+  justify-content: center;
+}
+.save-edit{
+  width: 30%;
+  position: relative;
+}
+.card{
+  display: flex;
+  justify-content: center;
+}
+.inactive-row{
+  background-color: #dedede;
+}
+.bg-pagination-prev{
+  width: 4rem;
+  position: static;
+  right: 1rem;
+}
+.bg-pagination-next{
+  width: 4rem;
+  position: static;
+  left: 1rem;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-input{
+  position: relative;
+  display: flex;
+  width: 20rem;
+  top: 3.5rem;
+}
+.dashboard-container{
+  position: relative;
+  bottom: 20rem;
+  display: flex;
+  justify-content: center;
+}
+.card-grid{
+  display: flex;
+  gap: 3rem;
+}
+.card-dashboard{
+  background-color: white;
+  padding: 1rem;
+}
+.recharts{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  top: 8rem;
+}
+.menu-lateral{
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  right: 1rem;
+  align-items: center;
+  top: 0.5rem;
+}
+.menu-img{
+  width: 2rem;
+}
+.payroll-detail-button{
+  background-color: #03cc03;
+}
+.payroll-detail-button:hover{
+  background-color: #137a2f;
+}
