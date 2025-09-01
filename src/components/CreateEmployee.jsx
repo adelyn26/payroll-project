@@ -4,7 +4,11 @@ import {submitEmployee} from '../src/Service/formService.jsx'
 export default function CreateEmployee({onClose}) {
     const [formData, setFormData] = useState({
         name: '',
+<<<<<<< HEAD
         idNumber:'',
+=======
+        identificationNumber:'',
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
         position:'',
         salary:'',
         over_time:'',
@@ -26,7 +30,11 @@ export default function CreateEmployee({onClose}) {
         const formattedData = {
             ...formData,
             name: formData.name,
+<<<<<<< HEAD
             idNumber: formData.idNumber,
+=======
+            identificationNumber: formData.identificationNumber,
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
             position: formData.position,
             salary: formData.salary,
             over_time: formData.over_time,
@@ -49,8 +57,13 @@ export default function CreateEmployee({onClose}) {
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}
                            required/>
 
+<<<<<<< HEAD
                     <label htmlFor="idNumber">Identification number:</label>
                     <input type="text" id="idNumber" name="idNumber" value={formData.idNumber}
+=======
+                    <label htmlFor="identificationNumber">Identification number:</label>
+                    <input type="text" id="identificationNumber" name="identificationNumber" value={formData.identificationNumber}
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
                            onChange={handleChange}
                            required/>
 

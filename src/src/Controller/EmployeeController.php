@@ -15,7 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class EmployeeController extends AbstractController
 {
     #[Route('/api/save-employee', name: 'save_employee', methods: ['POST', 'OPTIONS'])]
+<<<<<<< HEAD
     public function saveEmployee(Request $request, EntityManagerInterface $entityManager): JsonResponse
+=======
+    public function saveEmployee(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): JsonResponse
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     {
         if ('OPTIONS' === $request->getMethod()) {
             return new JsonResponse(null, 200, [
@@ -26,7 +30,11 @@ class EmployeeController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+<<<<<<< HEAD
 
+=======
+        $logger->debug('save employee', ['data' => $data]);
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
         if (!$data) {
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
@@ -39,7 +47,11 @@ class EmployeeController extends AbstractController
             $employee->setHiringDate(new \DateTime($data['hiringDate']));
             $employee->setPeriodEnd(new \DateTime($data['hiringDate']));
             $employee->setIsActive((bool) $data['isActive']);
+<<<<<<< HEAD
             $employee->setIdentificationNumber($data['idNumber']);
+=======
+            $employee->setIdentificationNumber($data['identificationNumber']);
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
             $employee->setTypeOfContract($data['contract']);
 
             $entityManager->persist($employee);
@@ -52,7 +64,11 @@ class EmployeeController extends AbstractController
     }
 
     #[Route('/api/employee', name: 'fetch_employee', methods: ['GET', 'OPTIONS'])]
+<<<<<<< HEAD
     public function fetchEmployee(Request $request, employeeRepository $employeeRepository): JsonResponse
+=======
+    public function fetchEmployee(Request $request, employeeRepository $employeeRepository, LoggerInterface $logger): JsonResponse
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     {
         if ('OPTIONS' === $request->getMethod()) {
             return new JsonResponse(null, 200, [
@@ -62,6 +78,11 @@ class EmployeeController extends AbstractController
             ]);
         }
         $employee = $employeeRepository->findAll();
+<<<<<<< HEAD
+=======
+        $logger->debug('todos los empleados: ', $employee );
+
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
         $data = array_map(fn ($employee) => [
             'id' => $employee->getId(),
             'name' => $employee->getName(),

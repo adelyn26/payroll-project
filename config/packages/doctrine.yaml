@@ -8,6 +8,16 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+<<<<<<< HEAD
+=======
+    tenant:
+      driver: 'pdo_mysql'
+      host: '%env(resolve:DB_HOST)%'
+      port: '%env(resolve:DB_PORT)%'
+      user: '%env(resolve:DB_USER)%'
+      password: '%env(resolve:DB_PASSWORD)%'
+      dbname: ''
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

@@ -27,6 +27,11 @@ class payroll
     #[ORM\ManyToMany(targetEntity: Deduction::class)]
     #[ORM\JoinTable(name: 'payroll_deduction')]
     private Collection $deductions;
+<<<<<<< HEAD
+=======
+    #[ORM\OneToMany(mappedBy: 'payroll', targetEntity: income::class, cascade: ['persist', 'remove'])]
+    private Collection $incomes;
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
 
     public function __construct()
     {

@@ -1,0 +1,8 @@
+# Imagen PHP-FPM pública como base
+FROM php:8.2-fpm-alpine
+
+# Instala extensiones de PHP que tu proyecto necesite
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Carpeta de trabajo
+WORKDIR /var/www/html

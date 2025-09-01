@@ -10,12 +10,20 @@ export async function submitEmployee(formData) {
             body: JSON.stringify(formData)
 
         });
+<<<<<<< HEAD
         console.log('Form Data:', formData);
+=======
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Error saving data.');
         }
+<<<<<<< HEAD
 
+=======
+        const data =  await response.json();
+        console.log('guardar empleado: ',data)
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
         alert('Data saved successfully!');
     } catch (error) {
         console.error('Error submitting form:', error);

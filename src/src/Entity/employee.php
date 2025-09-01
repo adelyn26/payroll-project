@@ -14,8 +14,13 @@ class employee
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
+<<<<<<< HEAD
     #[ORM\Column(type: 'integer', length: 255)]
     private ?int $id_number = null;
+=======
+    #[ORM\Column(name: "identification_number", type: 'string', length: 255)]
+    private ?string $identificationNumber = null;
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
     #[ORM\Column(type: 'string', length: 255)]
@@ -32,13 +37,24 @@ class employee
     private ?string $typeOfContract = null;
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Payroll::class, cascade: ['persist', 'remove'])]
     private Collection $payrolls;
+<<<<<<< HEAD
 
+=======
+    #[ORM\ManyToOne(inversedBy: 'employee')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: leaveRequest::class, cascade: ['persist', 'remove'])]
+    private Collection $leaveRequests;
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: document::class, cascade: ['persist', 'remove'])]
+    private Collection $document ;
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     public function getId(): ?int
     {
         return $this->id;
     }
     public function getIdentificationNumber(): ?int
     {
+<<<<<<< HEAD
         return $this->id_number;
     }
 
@@ -47,6 +63,15 @@ class employee
         $this->id_number = $id_number;
 
         return $this;
+=======
+        return $this->identificationNumber;
+    }
+
+    public function setIdentificationNumber(string $identificationNumber): void
+    {
+        $this->identificationNumber = $identificationNumber;
+
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     }
     public function getName(): ?string
     {
@@ -111,5 +136,32 @@ class employee
     {
         $this->typeOfContract = $typeOfContract;
     }
+<<<<<<< HEAD
 
+=======
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+    public function setCompany(Company $company): void
+    {
+        $this->company = $company;
+    }
+    public function getLeaveRequests(): Collection
+    {
+        return $this->leaveRequests;
+    }
+    public function addLeaveRequest(LeaveRequest $leaveRequest): void
+    {
+        $this->leaveRequests->add($leaveRequest);
+    }
+    public function getDocument(): Collection
+    {
+        return $this->document;
+    }
+    public function addDocument(document $document): void
+    {
+        $this->document->add($document);
+    }
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
 }

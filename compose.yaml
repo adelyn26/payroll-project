@@ -20,7 +20,11 @@ services:
       dockerfile: docker/nginx/Dockerfile
       args:
         ENV: dev
+<<<<<<< HEAD
         fpm_image_name: ambimax/worklog-software-fpm:latest-production
+=======
+        fpm_image_name: adelyn26/kube-software:latest
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     restart: always
     ports:
       - "80:8000"
@@ -32,7 +36,11 @@ services:
   yarn:
     build:
       context: .
+<<<<<<< HEAD
       dockerfile: docker/yarn/Dockerfile
+=======
+      dockerfile: Dockerfile
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     ports:
       - '3000:3000'
     volumes:

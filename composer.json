@@ -65,7 +65,11 @@
   },
   "autoload": {
     "psr-4": {
+<<<<<<< HEAD
       "App\\": "src/src/"
+=======
+      "App\\": "src/"
+>>>>>>> 9b4aa7a8d337da66bf2c1208b6bbca2bf433dbce
     }
   },
   "autoload-dev": {
