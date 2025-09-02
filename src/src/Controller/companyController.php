@@ -29,30 +29,22 @@ class companyController extends abstractController
         if (!$data) {
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
-
+        //to save the name of the database
         $name = $request->get($data['name']);
-        $employee = $request->get($data['employee']);
-        $amountEmployees = $request->get($data['amountEmployees']);
-        $address = $request->get($data['address']);
-        $email = $request->get($data['email']);
         $dbName = 'kube_' . strtolower($name);
-        $phoneNumber = $request->get($data['phoneNumber']);
-        $rnc = $request->get('rnc');
-        $sector = $request->get('sector');
-        $user = $request->get('user');
 
         try {
             $company = new Company();
             $company->setName($name);
             $company->setDatabaseName($dbName);
-            $company->setEmployee($employee);
-            $company->setAmountEmployee($amountEmployees);
-            $company->setAddress($address);
-            $company->setEmail($email);
-            $company->setPhoneNumber($phoneNumber);
-            $company->setRnc($rnc);
-            $company->setSector($sector);
-            $company->setUser($user);
+            $company->setEmployee($data['employee']);
+            $company->setAmountEmployee($data['amountEmployees']);
+            $company->setAddress($data['address']);
+            $company->setEmail($data['email']);
+            $company->setPhoneNumber($data['phoneNumber']);
+            $company->setRnc($data['rnc']);
+            $company->setSector($data['sector']);
+            $company->setUser($data['user']);
 
             $em->persist($company);
             $em->flush();

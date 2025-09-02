@@ -25,6 +25,8 @@ class subscription
     private ?string $bankReference = null;
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $paymentToken = null;
+    #[ORM\Column(type: 'decimal', length: 100, nullable: true)]
+    private ?float $amount = null;
     #[ORM\ManyToOne(inversedBy: 'plan')]
     #[ORM\JoinColumn(nullable: false)]
     private ?plan $plan = null;
@@ -99,5 +101,13 @@ class subscription
     public function setPaymentToken(string $paymentToken): void
     {
         $this->paymentToken = $paymentToken;
+    }
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+    public function setAmount(float $amount): void
+    {
+        $this->amount = $amount;
     }
 }

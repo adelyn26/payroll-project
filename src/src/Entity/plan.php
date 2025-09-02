@@ -74,25 +74,18 @@ class plan
     {
         $this->company = $company;
     }
-    public function getSubscriptions(): Collection
+    public function getSubscriptions(): ?Collection
     {
         return $this->subscriptions;
     }
 
-    public function addSubscription(subscription $subscription): void
+    public function setSubscription(Collection $subscription): void
     {
-        if (!$this->subscriptions->contains($subscription)) {
-            $this->subscriptions->add($subscription);
-            $subscription->setPlan($this);
-        }
+       $this->subscriptions = $subscription;
     }
 
-    public function removeSubscription(subscription $subscription): void
+    public function removeSubscription(Collection $subscription): void
     {
-        if ($this->subscriptions->removeElement($subscription)) {
-            if ($subscription->getPlan() === $this) {
-                $subscription->setPlan($this);
-            }
-        }
+        $this->subscriptions->removeElement($subscription);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\plan;
 use App\Entity\subscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,7 @@ class subscriptionController extends AbstractController
                 'Access-Control-Allow-Headers' => 'Content-Type',
             ]);
         }
+        $plan = $entityManager->getRepository(plan::class)->findOneBy(['price']);
         $data = json_decode($request->getContent(), true);
         if (!$data) {
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
@@ -36,6 +38,15 @@ class subscriptionController extends AbstractController
             $subscription->setPaymentToken($data['payment_token']);
             $subscription->setStartDate($data['subscription_start_date']);
             $subscription->setStatus($data['status']);
+
+            if ($subscription->getType() === 'yearly') {
+                $amount = $plan->getPrice() * 12;
+                $subscription->setEndDate((new \DateTime())->modify('+1 year'));
+            } else {
+                $amount = $plan->getPrice();
+                $subscription->setEndDate((new \DateTime())->modify('+1 month'));
+            }
+            $subscription->setAmount($amount);
 
             $entityManager->persist($subscription);
             $entityManager->flush();
