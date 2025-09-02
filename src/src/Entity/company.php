@@ -31,24 +31,18 @@ class company
 
     #[ORM\Column(length: 100)]
     private string $phoneNumber;
-
     #[ORM\Column(length: 100)]
     private string $email;
-
-    #[ORM\Column(length: 100)]
-    private string $plan;
-
     #[ORM\Column(length: 100)]
     private string $amountEmployee;
-
     #[ORM\Column(length: 100)]
     private string $databaseName;
-
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: user::class, cascade: ['persist', 'remove'])]
     private Collection $users;
-
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: employee::class, cascade: ['persist', 'remove'])]
     private Collection $employee;
+    #[ORM\OneToOne(mappedBy: 'company', targetEntity: subscriptions::class, cascade: ['persist', 'remove'])]
+    private ?subscriptions $subscription = null;
 
     public function getId(): ?int
     {
@@ -112,14 +106,6 @@ class company
     {
         $this->email = $email;
     }
-    public function getPlan(): string
-    {
-        return $this->plan;
-    }
-    public function setPlan(string $plan): void
-    {
-        $this->plan = $plan;
-    }
     public function getAmountEmployee(): int
     {
         return $this->amountEmployee;
@@ -136,23 +122,28 @@ class company
     {
         $this->databaseName = $db;
     }
-    public function getUser(): user
+    public function getUser(): Collection
     {
         return $this->users;
     }
-
-    public function setUser(user $user): void
+    public function setUser(Collection $user): void
     {
-     $this->users = $user;
+     $this->users->add($user);
     }
-
-    public function getEmployee(): employee
+    public function getEmployee(): Collection
     {
         return $this->employee;
     }
-
-    public function setEmployee(employee $employee): void
+    public function setEmployee(Collection $employee): void
     {
        $this->employee = $employee;
+    }
+    public function getSubscriptions(): subscriptions
+    {
+        return $this->subscription;
+    }
+    public function setSubscriptions(subscriptions $subscriptions): void
+    {
+        $this->subscription = $subscriptions;
     }
 }

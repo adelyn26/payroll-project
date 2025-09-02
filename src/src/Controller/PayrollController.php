@@ -32,11 +32,13 @@ class PayrollController extends AbstractController
         }
         $employee = $entityManager->getRepository(employee::class)->findOneBy(['name' => $data['employee']]);
         $payroll = $entityManager->getRepository(payroll::class)->findOneBy(['employee' => $employee]);
+
         if ($payroll && null !== $payroll->getGrossPay()) {
             $logger->info('Gross Pay exists: '.$payroll->getGrossPay());
         } else {
             $logger->info('Gross Pay is empty or payroll record not found');
         }
+
         $payroll = new payroll();
         $deductionIds = $data['deduction'] ?? [];
         foreach ($deductionIds as $deductionId) {
