@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: plans::class)]
-#[ORM\Table(name: 'plans')]
-class plans
+#[ORM\Entity(repositoryClass: plan::class)]
+#[ORM\Table(name: 'plan')]
+class plan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +25,7 @@ class plans
     private ?string $price = null;
     #[ORM\OneToMany(mappedBy: 'plan', targetEntity: company::class)]
     private Collection $company;
-    #[ORM\OneToMany(mappedBy: 'plan', targetEntity: subscriptions::class)]
+    #[ORM\OneToMany(mappedBy: 'plan', targetEntity: subscription::class)]
     private Collection $subscriptions;
 
     public function getId(): ?int
@@ -79,7 +79,7 @@ class plans
         return $this->subscriptions;
     }
 
-    public function addSubscription(subscriptions $subscription): void
+    public function addSubscription(subscription $subscription): void
     {
         if (!$this->subscriptions->contains($subscription)) {
             $this->subscriptions->add($subscription);
@@ -87,7 +87,7 @@ class plans
         }
     }
 
-    public function removeSubscription(subscriptions $subscription): void
+    public function removeSubscription(subscription $subscription): void
     {
         if ($this->subscriptions->removeElement($subscription)) {
             if ($subscription->getPlan() === $this) {

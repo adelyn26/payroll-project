@@ -41,8 +41,8 @@ class company
     private Collection $users;
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: employee::class, cascade: ['persist', 'remove'])]
     private Collection $employee;
-    #[ORM\OneToOne(mappedBy: 'company', targetEntity: subscriptions::class, cascade: ['persist', 'remove'])]
-    private ?subscriptions $subscription = null;
+    #[ORM\OneToOne(mappedBy: 'company', targetEntity: subscription::class, cascade: ['persist', 'remove'])]
+    private ?subscription $subscription = null;
 
     public function getId(): ?int
     {
@@ -138,11 +138,11 @@ class company
     {
        $this->employee = $employee;
     }
-    public function getSubscriptions(): subscriptions
+    public function getSubscriptions(): subscription
     {
         return $this->subscription;
     }
-    public function setSubscriptions(subscriptions $subscriptions): void
+    public function setSubscriptions(subscription $subscriptions): void
     {
         $this->subscription = $subscriptions;
     }

@@ -21,7 +21,7 @@ final class Version20250901222815 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE plans ADD price NUMERIC(10, 0) NOT NULL
+            ALTER TABLE plan ADD price NUMERIC(10, 0) NOT NULL
         SQL);
     }
 
@@ -29,7 +29,7 @@ final class Version20250901222815 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE plans DROP price
+            ALTER TABLE plan DROP price
         SQL);
     }
 }

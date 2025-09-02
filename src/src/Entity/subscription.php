@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\subscriptionsRepository;
+use App\Repository\subscriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: subscriptionsRepository::class)]
+#[ORM\Entity(repositoryClass: subscriptionRepository::class)]
 #[ORM\Table(name: 'subscription')]
-class subscriptions
+class subscription
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,7 +27,7 @@ class subscriptions
     private ?string $paymentToken = null;
     #[ORM\ManyToOne(inversedBy: 'plan')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?plans $plan = null;
+    private ?plan $plan = null;
     #[ORM\OneToOne(inversedBy: 'subscription')]
     #[ORM\JoinColumn(nullable: false)]
     private ?company $company = null;
@@ -60,11 +60,11 @@ class subscriptions
     {
         $this->status = $status;
     }
-    public function getPlan(): ?plans
+    public function getPlan(): ?plan
     {
        return $this->plan;
     }
-    public function setPlan(plans $plan): void
+    public function setPlan(plan $plan): void
     {
         $this->plan = $plan;
     }

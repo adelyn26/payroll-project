@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\subscriptions;
+use App\Entity\subscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +27,7 @@ class subscriptionController extends AbstractController
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
         try {
-            $subscription = new subscriptions();
+            $subscription = new subscription();
             $subscription->setCompany($data['company']);
             $subscription->setPlan($data['plan']);
             $subscription->setBankReference($data['bank_reference']);
