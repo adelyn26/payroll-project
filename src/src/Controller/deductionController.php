@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DeductionController extends AbstractController
+class deductionController extends AbstractController
 {
     #[Route('/api/deduction', name: 'fetch_deduction', methods: ['GET', 'OPTIONS'])]
     public function fetchDeduction(Request $request, deductionRepository $deductionRepository): JsonResponse

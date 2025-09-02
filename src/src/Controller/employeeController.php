@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EmployeeController extends AbstractController
+class employeeController extends AbstractController
 {
     #[Route('/api/save-employee', name: 'save_employee', methods: ['POST', 'OPTIONS'])]
     public function saveEmployee(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): JsonResponse

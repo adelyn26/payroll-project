@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class DashboardController extends AbstractController
+class dashboardController extends AbstractController
 {
 
 }
