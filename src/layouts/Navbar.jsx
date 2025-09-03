@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
     const [menuItems, setMenuItems] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    
     useEffect(() => {
 
     }, []);

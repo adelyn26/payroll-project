@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { fetchPayroll, fetchEmployee, fetchPayrollDeduction, fetchEmployeeStatus, fetchEmployeeByDepartment } from '../src/Service/formService.jsx'
-import EmployeeStatusChart from './EmployeeStatusChart';
-import DepartmentPieChart from "./DepartmentPieChart.jsx";
+import EmployeeStatusChart from '../components/EmployeeStatusChart.jsx';
+import DepartmentPieChart from "../components/DepartmentPieChart.jsx";
 export default function Dashboard() {
     const [payrollStatus, setPayrollStatus] = useState([]);
     const [employeeCount, setEmployeeCount] = useState(0);
