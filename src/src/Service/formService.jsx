@@ -226,7 +226,8 @@ export async function fetchEmployeeStatus(){
         }
         return await response.json();
     } catch (error) {
-    return [];
+        console.error('Error fetching employee:', error);
+        return [];
     }
 }
 export async function fetchEmployeeByDepartment(){
@@ -246,6 +247,7 @@ export async function fetchEmployeeByDepartment(){
         console.log('department formService: ', data)
         return data;
     } catch (error) {
+        console.error('Error fetching employee:', error);
         return [];
     }
 }

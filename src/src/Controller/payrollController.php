@@ -162,7 +162,7 @@ class payrollController extends AbstractController
 
         $logger->error('array data: ', [$data]);
 
-        $response = new JsonResponse(['message' => 'Game fetch successfully'], 201);
+        $response = new JsonResponse(['message' => 'payroll fetch successfully'], 201);
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');

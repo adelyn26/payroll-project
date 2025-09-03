@@ -29,7 +29,7 @@ class companyController extends abstractController
         if (!$data) {
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
-        //to save the name of the database
+        //to save the company database name
         $name = $request->get($data['name']);
         $dbName = 'kube_' . strtolower($name);
 
@@ -51,7 +51,7 @@ class companyController extends abstractController
 
             $tenantManager->createTenantDatabase($dbName);
         }catch (\Exception $exception){
-
+            return new JsonResponse(['error' => $exception->getMessage()], 500);
         }
 
         $response = new JsonResponse(['message' => 'Company saved successfully'], 201);
