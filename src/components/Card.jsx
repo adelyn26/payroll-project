@@ -48,7 +48,7 @@ function CardTitle({ className, ...props }) {
 
 function CardDescription({ className, ...props }) {
   return (
-    <p
+    <div
       data-slot="card-description"
       className={cn("text-muted-foreground", className)}
       {...props}
@@ -73,7 +73,7 @@ function CardFooter({ className, ...props }) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center px-6 pb-6 [.border-t]:pt-6", className)}
+      className={cn(`flex items-center [.border-t]:pt-6`, className)}
       {...props}
     />
   );
