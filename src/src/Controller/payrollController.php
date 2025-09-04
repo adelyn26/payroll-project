@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PayrollController extends AbstractController
+class payrollController extends AbstractController
 {
     #[Route('/api/save-payroll', name: 'save_payroll', methods: ['POST', 'OPTIONS'])]
     public function savePayroll(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): JsonResponse
@@ -32,11 +32,13 @@ class PayrollController extends AbstractController
         }
         $employee = $entityManager->getRepository(employee::class)->findOneBy(['name' => $data['employee']]);
         $payroll = $entityManager->getRepository(payroll::class)->findOneBy(['employee' => $employee]);
+
         if ($payroll && null !== $payroll->getGrossPay()) {
             $logger->info('Gross Pay exists: '.$payroll->getGrossPay());
         } else {
             $logger->info('Gross Pay is empty or payroll record not found');
         }
+
         $payroll = new payroll();
         $deductionIds = $data['deduction'] ?? [];
         foreach ($deductionIds as $deductionId) {
@@ -160,7 +162,7 @@ class PayrollController extends AbstractController
 
         $logger->error('array data: ', [$data]);
 
-        $response = new JsonResponse(['message' => 'Game fetch successfully'], 201);
+        $response = new JsonResponse(['message' => 'payroll fetch successfully'], 201);
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');

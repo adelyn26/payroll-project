@@ -128,16 +128,24 @@ class employee
     {
         return $this->leaveRequests;
     }
-    public function addLeaveRequest(LeaveRequest $leaveRequest): void
+    public function addLeaveRequest(Collection $leaveRequest): void
     {
-        $this->leaveRequests->add($leaveRequest);
+        $this->leaveRequests = $leaveRequest;
     }
     public function getDocument(): Collection
     {
         return $this->document;
     }
-    public function addDocument(document $document): void
+    public function addDocument(Collection $document): void
     {
-        $this->document->add($document);
+        $this->document = $document;
+    }
+    public function getPayrolls(): Collection
+    {
+        return $this->payrolls;
+    }
+    public function addPayroll(Collection $payroll): void
+    {
+        $this->payrolls = $payroll;
     }
 }
