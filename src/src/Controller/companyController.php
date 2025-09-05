@@ -30,9 +30,8 @@ class companyController extends abstractController
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
         //to save the company database name
-        $name = $request->get('name');
+        $name = $data['name'];
         $dbName = 'kube_' . strtolower($name);
-
         try {
             $company = new Company();
             $company->setName($name);
