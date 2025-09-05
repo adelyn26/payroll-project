@@ -40,7 +40,7 @@ class companyController extends abstractController
                 $employee->setName($empData['name']);
                 $employee->setSalary($empData['salary']);
                 $employee->setIdentificationNumber($empData['identificationNumber']);
-                $employee->setHiringDate($empData['hiringDate']);
+                $employee->setHiringDate(new \DateTime($empData['hiringDate']));
                 $employee->setPosition($empData['position']);
                 $employee->setTypeOfContract($empData['typeOfContract']);
                 $employee->addDocument($empData['document']);
