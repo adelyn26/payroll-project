@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\company;
 use App\Entity\document;
 use App\Entity\employee;
+use App\Entity\leaveRequest;
+use App\Entity\payroll;
 use App\Entity\user;
 use App\Service\tenantManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,8 +37,8 @@ class companyController extends abstractController
         $dbName = 'kube_' . strtolower($name);
         try {
             $company = new Company();
+            $employee = new Employee();
             foreach ($data['employee'] as $empData) {
-                $employee = new Employee();
                 $employee->setCompany($company);
                 $employee->setName($empData['name']);
                 $employee->setSalary($empData['salary']);
@@ -44,11 +46,30 @@ class companyController extends abstractController
                 $employee->setHiringDate(new \DateTime($empData['hiringDate']));
                 $employee->setPosition($empData['position']);
                 $employee->setTypeOfContract($empData['typeOfContract']);
-                $employee->addDocument($empData['document']);
-                $employee->addPayroll($empData['payroll']);
-                $employee->addLeaveRequest($empData['leaveRequest']);
 
                 $company->addEmployee($employee);
+            }
+            foreach ($data['document'] as $docData) {
+                $document = new Document();
+                $document->setEmployee($employee);
+                $document->setDocType($docData['docType']);
+                $document->setFilePath($docData['filePath']);
+
+                $employee->addDocument($document);
+            }
+            foreach ($data['payroll'] as $payrollData) {
+                $payroll =  new Payroll();
+                $payroll->setEmployee($employee);
+                $payroll->setGrossPay($payrollData['grossPay']);
+                $payroll->setNetPay($payrollData['netPay']);
+            }
+            foreach ($data['leaveRequest'] as $leaveRequestData) {
+                $leaveRequest =  new LeaveRequest();
+                $leaveRequest->setEmployee($employee);
+                $leaveRequest->setLeaveType($leaveRequestData['leaveType']);
+                $leaveRequest->setStartDate(new \DateTime($leaveRequestData['startDate']));
+                $leaveRequest->setEndDate(new \DateTime($leaveRequestData['endDate']));
+                $leaveRequest->setReason($leaveRequestData['reason']);
             }
             $company->setName($name);
             $company->setDatabaseName($dbName);

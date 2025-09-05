@@ -136,9 +136,15 @@ class employee
     {
         return $this->document;
     }
-    public function addDocument(Collection $document): void
+
+    public function addDocument(Document $document): self
     {
-        $this->document = $document;
+        if (!$this->document->contains($document)) {
+            $this->document[] = $document;
+            $document->setEmployee($this);
+        }
+
+        return $this;
     }
     public function getPayrolls(): Collection
     {
