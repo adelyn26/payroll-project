@@ -36,7 +36,16 @@ class companyController extends abstractController
             $company = new Company();
             foreach ($data['employee'] as $empData) {
                 $employee = new Employee();
+                $employee->setCompany($company);
                 $employee->setName($empData['name']);
+                $employee->setSalary($empData['salary']);
+                $employee->setIdentificationNumber($empData['identificationNumber']);
+                $employee->setHiringDate($empData['hiringDate']);
+                $employee->setPosition($empData['position']);
+                $employee->setTypeOfContract($empData['typeOfContract']);
+                $employee->addDocument($empData['document']);
+                $employee->addPayroll($empData['payroll']);
+                $employee->addLeaveRequest($empData['leaveRequest']);
 
                 $company->addEmployee($employee);
             }
