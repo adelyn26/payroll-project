@@ -87,8 +87,6 @@ class companyController extends abstractController
                 $user->setPassword($userData['password']);
                 $user->setRole($userData['role']);
             }
-            $company->setUser($data['user']);
-
             $em->persist($company);
             $em->flush();
 
