@@ -46,7 +46,7 @@ class companyController extends abstractController
                 $employee->setHiringDate(new \DateTime($empData['hiringDate']));
                 $employee->setPosition($empData['position']);
                 $employee->setTypeOfContract($empData['typeOfContract']);
-                $employee->setPeriodEnd($empData['periodEnd']);
+                $employee->setPeriodEnd(new \DateTime($empData['periodEnd']));
 
                 $company->addEmployee($employee);
             }
