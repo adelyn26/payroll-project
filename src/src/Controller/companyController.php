@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\company;
+use App\Entity\document;
 use App\Entity\employee;
 use App\Entity\user;
 use App\Service\tenantManager;
