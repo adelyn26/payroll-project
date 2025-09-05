@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\employeeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -39,6 +40,13 @@ class employee
     private Collection $leaveRequests;
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: document::class, cascade: ['persist', 'remove'])]
     private Collection $document ;
+
+    public function __construct()
+    {
+        $this->payrolls = new ArrayCollection();
+        $this->document = new ArrayCollection();
+        $this->leaveRequests = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;

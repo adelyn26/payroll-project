@@ -44,6 +44,11 @@ class company
     #[ORM\OneToOne(mappedBy: 'company', targetEntity: subscription::class, cascade: ['persist', 'remove'])]
     private ?subscription $subscription = null;
 
+    public function __construct()
+    {
+        $this->employee = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
