@@ -7,6 +7,7 @@ use App\Entity\document;
 use App\Entity\employee;
 use App\Entity\leaveRequest;
 use App\Entity\payroll;
+use App\Entity\subscription;
 use App\Entity\user;
 use App\Service\tenantManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,6 +48,7 @@ class companyController extends abstractController
                 $employee->setPosition($empData['position']);
                 $employee->setTypeOfContract($empData['typeOfContract']);
                 $employee->setPeriodEnd(new \DateTime($empData['periodEnd']));
+                $employee->setIsActive(true);
 
                 $company->addEmployee($employee);
             }
@@ -63,6 +65,7 @@ class companyController extends abstractController
                 $payroll->setEmployee($employee);
                 $payroll->setGrossPay($payrollData['grossPay']);
                 $payroll->setNetPay($payrollData['netPay']);
+                $payroll->setPayMode($payrollData['payMode']);
             }
             foreach ($data['leaveRequest'] as $leaveRequestData) {
                 $leaveRequest =  new LeaveRequest();
@@ -71,6 +74,7 @@ class companyController extends abstractController
                 $leaveRequest->setStartDate(new \DateTime($leaveRequestData['startDate']));
                 $leaveRequest->setEndDate(new \DateTime($leaveRequestData['endDate']));
                 $leaveRequest->setReason($leaveRequestData['reason']);
+                $leaveRequest->setStatus('pending');
             }
             foreach ($data['user'] as $userData) {
                 $user =  new user();
@@ -79,6 +83,19 @@ class companyController extends abstractController
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
                 $user->setRole($userData['role']);
+                $user->setPhoneNumber($userData['phoneNumber']);
+            }
+            foreach ($data['subscription'] as $subscriptionData) {
+                $subscription =  new subscription();
+                $subscription->setCompany($company);
+                $subscription->setStatus('active');
+                $subscription->setStartDate(new \DateTime($subscriptionData['startDate']));
+                $subscription->setEndDate(new \DateTime($subscriptionData['endDate']));
+                $subscription->setAmount($subscriptionData['amount']);
+                $subscription->setType($subscriptionData['type']);
+                $subscription->setPlan($subscriptionData['plan']);
+                $subscription->setPaymentToken($subscriptionData['paymentToken']);
+                $subscription->setBankReference($subscriptionData['bankReference']);
             }
             $company->setName($name);
             $company->setDatabaseName($dbName);
