@@ -134,9 +134,14 @@ class company
     {
         return $this->employee;
     }
-    public function setEmployee(Collection $employee): void
+    public function addEmployee(Employee $employee): self
     {
-       $this->employee = $employee;
+        if (!$this->employee->contains($employee)) {
+            $this->employee[] = $employee;
+            $employee->setCompany($this);
+        }
+
+        return $this;
     }
     public function getSubscriptions(): subscription
     {

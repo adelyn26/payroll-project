@@ -34,9 +34,14 @@ class companyController extends abstractController
         $dbName = 'kube_' . strtolower($name);
         try {
             $company = new Company();
+            foreach ($data['employee'] as $empData) {
+                $employee = new Employee();
+                $employee->setName($empData['name']);
+
+                $company->addEmployee($employee);
+            }
             $company->setName($name);
             $company->setDatabaseName($dbName);
-            $company->setEmployee($data['employee']);
             $company->setAmountEmployee($data['amountEmployees']);
             $company->setAddress($data['address']);
             $company->setEmail($data['email']);
