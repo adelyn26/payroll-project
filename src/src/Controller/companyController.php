@@ -79,6 +79,14 @@ class companyController extends abstractController
             $company->setPhoneNumber($data['phoneNumber']);
             $company->setRnc($data['rnc']);
             $company->setSector($data['sector']);
+            foreach ($data['user'] as $userData) {
+                $user =  new user();
+                $user->setCompany($company);
+                $user->setName($userData['name']);
+                $user->setEmail($userData['email']);
+                $user->setPassword($userData['password']);
+                $user->setRole($userData['role']);
+            }
             $company->setUser($data['user']);
 
             $em->persist($company);
