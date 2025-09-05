@@ -46,6 +46,7 @@ class companyController extends abstractController
                 $employee->setHiringDate(new \DateTime($empData['hiringDate']));
                 $employee->setPosition($empData['position']);
                 $employee->setTypeOfContract($empData['typeOfContract']);
+                $employee->setPeriodEnd($empData['periodEnd']);
 
                 $company->addEmployee($employee);
             }
@@ -71,14 +72,6 @@ class companyController extends abstractController
                 $leaveRequest->setEndDate(new \DateTime($leaveRequestData['endDate']));
                 $leaveRequest->setReason($leaveRequestData['reason']);
             }
-            $company->setName($name);
-            $company->setDatabaseName($dbName);
-            $company->setAmountEmployee($data['amountEmployees']);
-            $company->setAddress($data['address']);
-            $company->setEmail($data['email']);
-            $company->setPhoneNumber($data['phoneNumber']);
-            $company->setRnc($data['rnc']);
-            $company->setSector($data['sector']);
             foreach ($data['user'] as $userData) {
                 $user =  new user();
                 $user->setCompany($company);
@@ -87,6 +80,14 @@ class companyController extends abstractController
                 $user->setPassword($userData['password']);
                 $user->setRole($userData['role']);
             }
+            $company->setName($name);
+            $company->setDatabaseName($dbName);
+            $company->setAmountEmployee($data['amountEmployees']);
+            $company->setAddress($data['address']);
+            $company->setEmail($data['email']);
+            $company->setPhoneNumber($data['phoneNumber']);
+            $company->setRnc($data['rnc']);
+            $company->setSector($data['sector']);
             $em->persist($company);
             $em->flush();
 
