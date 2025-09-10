@@ -2,25 +2,27 @@
 
 namespace App\Controller;
 
-use App\Entity\company;
-use App\Entity\document;
-use App\Entity\employee;
-use App\Entity\leaveRequest;
-use App\Entity\payroll;
-use App\Entity\subscription;
-use App\Entity\user;
-use App\Service\tenantManager;
+use App\Entity\Company;
+use App\Entity\Employee;
+use App\Entity\User;
+use App\Entity\Plan;
+use App\Entity\Subscription;
+use App\Service\TenantDatabaseManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class companyController extends abstractController
+class companyController extends AbstractController
 {
     #[Route('/register-company', name: 'register_company')]
-    public function register(Request $request, EntityManagerInterface $em, tenantManager $tenantManager): Response
+    public function register(
+        Request $request,
+        EntityManagerInterface $em,
+        TenantDatabaseManager $tenantDbManager
+    ): Response
     {
         if ('OPTIONS' === $request->getMethod()) {
             return new JsonResponse(null, 200, [
@@ -29,17 +31,33 @@ class companyController extends abstractController
                 'Access-Control-Allow-Headers' => 'Content-Type',
             ]);
         }
+
         $data = json_decode($request->getContent(), true);
         if (!$data) {
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
-        //to save the company database name
+
         $name = $data['name'];
         $dbName = 'kube_' . strtolower($name);
+
         try {
+            // Guardar company
             $company = new Company();
-            $employee = new Employee();
+            $company->setName($name);
+            $company->setDatabaseName($dbName);
+            $company->setAmountEmployee($data['amountEmployees']);
+            $company->setAddress($data['address']);
+            $company->setEmail($data['email']);
+            $company->setPhoneNumber($data['phoneNumber']);
+            $company->setRnc($data['rnc']);
+            $company->setSector($data['sector']);
+
+            $em->persist($company);
+            $em->flush();
+
+            // Guardar empleados
             foreach ($data['employee'] as $empData) {
+                $employee = new Employee();
                 $employee->setCompany($company);
                 $employee->setName($empData['name']);
                 $employee->setSalary($empData['salary']);
@@ -49,35 +67,12 @@ class companyController extends abstractController
                 $employee->setTypeOfContract($empData['typeOfContract']);
                 $employee->setPeriodEnd(new \DateTime($empData['periodEnd']));
                 $employee->setIsActive(true);
-
                 $company->addEmployee($employee);
             }
-            foreach ($data['document'] as $docData) {
-                $document = new Document();
-                $document->setEmployee($employee);
-                $document->setDocType($docData['docType']);
-                $document->setFilePath($docData['filePath']);
 
-                $employee->addDocument($document);
-            }
-            foreach ($data['payroll'] as $payrollData) {
-                $payroll =  new Payroll();
-                $payroll->setEmployee($employee);
-                $payroll->setGrossPay($payrollData['grossPay']);
-                $payroll->setNetPay($payrollData['netPay']);
-                $payroll->setPayMode($payrollData['payMode']);
-            }
-            foreach ($data['leaveRequest'] as $leaveRequestData) {
-                $leaveRequest =  new LeaveRequest();
-                $leaveRequest->setEmployee($employee);
-                $leaveRequest->setLeaveType($leaveRequestData['leaveType']);
-                $leaveRequest->setStartDate(new \DateTime($leaveRequestData['startDate']));
-                $leaveRequest->setEndDate(new \DateTime($leaveRequestData['endDate']));
-                $leaveRequest->setReason($leaveRequestData['reason']);
-                $leaveRequest->setStatus('pending');
-            }
+            // Guardar usuarios
             foreach ($data['user'] as $userData) {
-                $user =  new user();
+                $user = new User();
                 $user->setCompany($company);
                 $user->setName($userData['name']);
                 $user->setEmail($userData['email']);
@@ -85,31 +80,28 @@ class companyController extends abstractController
                 $user->setRole($userData['role']);
                 $user->setPhoneNumber($userData['phoneNumber']);
             }
+
+            // Guardar plan y suscripción
+            $plan = new Plan();
             foreach ($data['subscription'] as $subscriptionData) {
-                $subscription =  new subscription();
+                $subscription = new Subscription();
                 $subscription->setCompany($company);
                 $subscription->setStatus('active');
                 $subscription->setStartDate(new \DateTime($subscriptionData['startDate']));
                 $subscription->setEndDate(new \DateTime($subscriptionData['endDate']));
                 $subscription->setAmount($subscriptionData['amount']);
                 $subscription->setType($subscriptionData['type']);
-                $subscription->setPlan($subscriptionData['plan']);
+                $subscription->setPlan($plan);
                 $subscription->setPaymentToken($subscriptionData['paymentToken']);
                 $subscription->setBankReference($subscriptionData['bankReference']);
             }
-            $company->setName($name);
-            $company->setDatabaseName($dbName);
-            $company->setAmountEmployee($data['amountEmployees']);
-            $company->setAddress($data['address']);
-            $company->setEmail($data['email']);
-            $company->setPhoneNumber($data['phoneNumber']);
-            $company->setRnc($data['rnc']);
-            $company->setSector($data['sector']);
-            $em->persist($company);
+
             $em->flush();
 
-            $tenantManager->createTenantDatabase($dbName);
-        }catch (\Exception $exception){
+            // Crear base de datos tenant y ejecutar migraciones
+            $tenantDbManager->createAndMigrateTenant($dbName);
+
+        } catch (\Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], 500);
         }
 

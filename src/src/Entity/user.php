@@ -29,7 +29,7 @@ class user
     public string $role;
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Company $company = null;
+    private ?company $company = null;
 
     public function getId(): ?int
     {

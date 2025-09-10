@@ -31,14 +31,17 @@ class employee
     private ?bool $isActive = null;
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $typeOfContract = null;
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Payroll::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: payroll::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $payrolls;
     #[ORM\ManyToOne(inversedBy: 'employee')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Company $company = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?company $company = null;
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: leaveRequest::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $leaveRequests;
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: document::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $document ;
 
     public function __construct()

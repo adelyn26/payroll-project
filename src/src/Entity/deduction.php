@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\deductionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: deductionRepository::class)]
@@ -17,6 +19,13 @@ class deduction
     private ?string $type = null;
     #[ORM\Column(type: 'integer', length: 255)]
     private ?int $amount = null;
+    #[ORM\ManyToMany(targetEntity: payroll::class, inversedBy: 'deductions')]
+    #[ORM\JoinTable(name: 'payroll_deductions')]
+    private Collection $payroll;
+    public function __construct()
+    {
+        $this->payroll = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -45,15 +54,23 @@ class deduction
 
         return $this;
     }
-    public function getPayroll(): ?Payroll
+    public function getPayrolls(): Collection
     {
         return $this->payroll;
     }
 
-    public function setPayroll(?Payroll $payroll): self
+    public function addPayroll(Payroll $payroll): self
     {
-        $this->payroll = $payroll;
+        if (!$this->payroll->contains($payroll)) {
+            $this->payroll->add($payroll);
+        }
 
+        return $this;
+    }
+
+    public function removePayroll(Payroll $payroll): self
+    {
+        $this->payroll->removeElement($payroll);
         return $this;
     }
 }

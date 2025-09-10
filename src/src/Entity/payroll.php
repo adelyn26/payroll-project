@@ -24,10 +24,10 @@ class payroll
     #[ORM\ManyToOne(targetEntity: employee::class, inversedBy: 'payrolls')]
     #[ORM\JoinColumn(nullable: false)]
     private Employee $employee;
-    #[ORM\ManyToMany(targetEntity: Deduction::class)]
-    #[ORM\JoinTable(name: 'payroll_deduction')]
+    #[ORM\ManyToMany(targetEntity: deduction::class, mappedBy: 'payrolls')]
     private Collection $deductions;
     #[ORM\OneToMany(mappedBy: 'payroll', targetEntity: income::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $incomes;
 
     public function __construct()

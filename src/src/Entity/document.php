@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\src\Repository\documentRepository;
+use App\Repository\documentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: documentRepository::class)]
@@ -18,7 +18,7 @@ class document
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $filePath = null;
     #[ORM\ManyToOne(targetEntity: employee::class, inversedBy: 'document')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private Employee $employee;
     public function getId(): ?int
     {

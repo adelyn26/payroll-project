@@ -23,8 +23,8 @@ class leaveRequest
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $reason = null;
     #[ORM\ManyToOne(targetEntity: employee::class, inversedBy: 'leaveRequests')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Employee $employee;
+    #[ORM\JoinColumn(nullable: true)]
+    private employee $employee;
     public function getId(): ?int
     {
         return $this->id;
