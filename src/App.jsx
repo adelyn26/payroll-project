@@ -1,4 +1,4 @@
-import "./index.css";
+// import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from "./layouts/Navbar.jsx";
 import AppRoutes from "./routes.jsx";

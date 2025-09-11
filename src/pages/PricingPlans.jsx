@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -17,13 +16,13 @@ import {
   Shield,
   Zap,
   Crown,
-  Sparkles,
   ArrowRight,
 } from "lucide-react";
 import { Button } from "../components/Button.jsx";
 
 export default function PricingPlans() {
   const navigate = useNavigate();
+
   const planIcons = [Users, Zap, Crown];
   const planColors = [
     "from-blue-50 to-indigo-50 border-blue-200",
@@ -32,7 +31,6 @@ export default function PricingPlans() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-16">
       <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full mb-6">
@@ -60,7 +58,7 @@ export default function PricingPlans() {
           {Plans.map((plan, index) => {
             const IconComponent = planIcons[index];
             const isPopular = index === 1;
-    
+
             return (
               <div
                 key={plan.id}
@@ -176,7 +174,7 @@ export default function PricingPlans() {
           })}
         </div>
 
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 justify-center gap-2 flex">
           <div className="inline-flex items-center gap-6 bg-white/80 backdrop-blur-sm px-8 py-4 rounded-2xl border border-orange-200 shadow-lg">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-green-500" />
@@ -227,6 +225,5 @@ export default function PricingPlans() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
