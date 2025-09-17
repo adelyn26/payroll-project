@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Employee;
-use App\Entity\User;
 use App\Entity\Plan;
+use App\Entity\User;
 use App\Entity\Subscription;
 use App\Service\TenantDatabaseManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,10 +19,10 @@ class companyController extends AbstractController
     #[Route('/register-company', name: 'register_company')]
     public function register(
         Request $request,
-        EntityManagerInterface $em,
+        EntityManagerInterface $em, // DB principal
         TenantDatabaseManager $tenantDbManager
-    ): Response
-    {
+    ): JsonResponse {
+
         if ('OPTIONS' === $request->getMethod()) {
             return new JsonResponse(null, 200, [
                 'Access-Control-Allow-Origin' => '*',
@@ -37,11 +36,16 @@ class companyController extends AbstractController
             return new JsonResponse(['message' => 'Invalid JSON data'], 400);
         }
 
+        $existingCompany = $em->getRepository(Company::class)->findOneBy(['rnc' => $data['rnc']]);
+        if ($existingCompany) {
+            return new JsonResponse(['message' => 'La empresa ya está registrada.'], 400);
+        }
+
         $name = $data['name'];
         $dbName = 'kube_' . strtolower($name);
 
         try {
-            // Guardar company
+            // Crear empresa en DB principal
             $company = new Company();
             $company->setName($name);
             $company->setDatabaseName($dbName);
@@ -55,61 +59,87 @@ class companyController extends AbstractController
             $em->persist($company);
             $em->flush();
 
-            // Guardar empleados
-            foreach ($data['employee'] as $empData) {
+            // Crear DB tenant + migraciones
+            $tenantDbManager->createAndMigrateTenant($dbName);
+            $tenantEm = $tenantDbManager->getTenantEntityManager($dbName);
+
+            // Crear empresa en DB tenant
+            $tenantCompany = new Company();
+            $tenantCompany->setName($name);
+            $tenantCompany->setDatabaseName($dbName);
+            $tenantCompany->setAmountEmployee($data['amountEmployees']);
+            $tenantCompany->setAddress($data['address']);
+            $tenantCompany->setEmail($data['email']);
+            $tenantCompany->setPhoneNumber($data['phoneNumber']);
+            $tenantCompany->setRnc($data['rnc']);
+            $tenantCompany->setSector($data['sector']);
+            $tenantEm->persist($tenantCompany);
+            $tenantEm->flush();
+
+            foreach ($data['employee'] as $index => $empData) {
                 $employee = new Employee();
-                $employee->setCompany($company);
+                $employee->setCompany($tenantCompany);
                 $employee->setName($empData['name']);
-                $employee->setSalary($empData['salary']);
-                $employee->setIdentificationNumber($empData['identificationNumber']);
-                $employee->setHiringDate(new \DateTime($empData['hiringDate']));
-                $employee->setPosition($empData['position']);
-                $employee->setTypeOfContract($empData['typeOfContract']);
-                $employee->setPeriodEnd(new \DateTime($empData['periodEnd']));
                 $employee->setIsActive(true);
-                $company->addEmployee($employee);
+                $employee->setIdentificationNumber($empData['identificationNumber']);
+
+                if (isset($data['user'][$index])) {
+                    $employee->setPosition($data['user'][$index]['role']);
+                }
+
+                $tenantEm->persist($employee);
             }
 
-            // Guardar usuarios
             foreach ($data['user'] as $userData) {
                 $user = new User();
-                $user->setCompany($company);
+                $user->setCompany($tenantCompany);
                 $user->setName($userData['name']);
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
                 $user->setRole($userData['role']);
                 $user->setPhoneNumber($userData['phoneNumber']);
+                $tenantEm->persist($user);
             }
 
-            // Guardar plan y suscripción
-            $plan = new Plan();
             foreach ($data['subscription'] as $subscriptionData) {
                 $subscription = new Subscription();
-                $subscription->setCompany($company);
+                $subscription->setCompany($tenantCompany);
                 $subscription->setStatus('active');
                 $subscription->setStartDate(new \DateTime($subscriptionData['startDate']));
                 $subscription->setEndDate(new \DateTime($subscriptionData['endDate']));
                 $subscription->setAmount($subscriptionData['amount']);
                 $subscription->setType($subscriptionData['type']);
-                $subscription->setPlan($plan);
                 $subscription->setPaymentToken($subscriptionData['paymentToken']);
                 $subscription->setBankReference($subscriptionData['bankReference']);
+
+                $planPrincipal = $em->getRepository(Plan::class)->find($subscriptionData['planId']);
+                if (!$planPrincipal) {
+                    throw new \Exception('Plan no encontrado en la base de datos principal.');
+                }
+
+                $planTenant = new Plan();
+                $planTenant->setName($planPrincipal->getName());
+                $planTenant->setDescription($planPrincipal->getDescription());
+                $planTenant->setEmployeeLimit($planPrincipal->getEmployeeLimit());
+                $planTenant->setStatus($planPrincipal->getStatus());
+                $planTenant->setPrice($planPrincipal->getPrice());
+                $tenantEm->persist($planTenant);
+                $tenantEm->flush();
+
+                $subscription->setPlan($planTenant);
+                $tenantEm->persist($subscription);
             }
 
-            $em->flush();
-
-            // Crear base de datos tenant y ejecutar migraciones
-            $tenantDbManager->createAndMigrateTenant($dbName);
+            $tenantEm->flush();
 
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], 500);
         }
 
-        $response = new JsonResponse(['message' => 'Company saved successfully'], 201);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');
-
-        return $response;
+        return new JsonResponse(['message' => 'Company saved successfully'], 201, [
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type, Accept',
+        ]);
     }
 }

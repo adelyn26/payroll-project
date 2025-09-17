@@ -78,7 +78,7 @@ export default function Registration() {
             <ProgressIndicator currentStep={currentStep} />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Selected Plan Card */}
+            {/* Selected plan Card */}
             {plan && (
               <div className="lg:col-span-1">
                 <Card className="sticky top-8 bg-gradient-to-br from-white/80 to-orange-50/80 backdrop-blur-sm border-2 border-orange-200 shadow-xl">
@@ -120,7 +120,7 @@ export default function Registration() {
             {/* Registration Forms */}
             <div className={plan ? "lg:col-span-2" : "lg:col-span-3"}>
               <Card className="bg-white/90 backdrop-blur-sm border-2 border-orange-200 shadow-xl">
-                {/* Step 1: Company Data */}
+                {/* Step 1: company Data */}
                 {currentStep === 1 && (
                   <>
                     <CardHeader className="text-center">

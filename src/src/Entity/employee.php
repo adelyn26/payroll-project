@@ -15,21 +15,21 @@ class employee
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
-    #[ORM\Column(name: "identification_number", type: 'string', length: 255)]
+    #[ORM\Column(name: "identification_number", type: 'string', length: 255, nullable: true)]
     private ?string $identificationNumber = null;
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $position = null;
-    #[ORM\Column(type: 'integer', length: 255)]
+    #[ORM\Column(type: 'integer', length: 255, nullable: true)]
     private ?int $salary = null;
-    #[ORM\Column(type: 'date', length: 255)]
+    #[ORM\Column(type: 'date', length: 255, nullable: true)]
     private ?\DateTimeInterface $hiringDate = null;
-    #[ORM\Column(type: 'date', length: 255)]
+    #[ORM\Column(type: 'date', length: 255, nullable: true)]
     private ?\DateTimeInterface $periodEnd = null;
-    #[ORM\Column(type: 'boolean', length: 255)]
+    #[ORM\Column(type: 'boolean', length: 255, nullable: true)]
     private ?bool $isActive = null;
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $typeOfContract = null;
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: payroll::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -127,11 +127,11 @@ class employee
     {
         $this->typeOfContract = $typeOfContract;
     }
-    public function getCompany(): ?Company
+    public function getCompany(): ?company
     {
         return $this->company;
     }
-    public function setCompany(Company $company): void
+    public function setCompany(company $company): void
     {
         $this->company = $company;
     }
@@ -148,7 +148,7 @@ class employee
         return $this->document;
     }
 
-    public function addDocument(Document $document): self
+    public function addDocument(document $document): self
     {
         if (!$this->document->contains($document)) {
             $this->document[] = $document;

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\deduction;
-use App\Entity\employee;
+use App\Entity\Employee;
 use App\Entity\payroll;
 use App\Repository\payrollRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +59,7 @@ class payrollController extends AbstractController
         $entityManager->persist($payroll);
         $entityManager->flush();
 
-        return new JsonResponse(['message' => 'Payroll saved successfully'], 201);
+        return new JsonResponse(['message' => 'payroll saved successfully'], 201);
     }
 
     #[Route('/api/payroll', name: 'fetch_payroll', methods: ['GET', 'OPTIONS'])]

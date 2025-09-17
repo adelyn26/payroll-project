@@ -3,15 +3,15 @@
 namespace App\Service;
 
 use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;
 
 class TenantDatabaseManager
 {
     private EntityManagerInterface $defaultEm;
 
-    public function __construct(EntityManagerInterface $defaultEm, )
+    public function __construct(EntityManagerInterface $defaultEm)
     {
         $this->defaultEm = $defaultEm;
     }
@@ -49,8 +49,8 @@ class TenantDatabaseManager
         $process = new Process([
             'php',
             __DIR__ . '/../../bin/console',
-            'doctrine:migrations:migrate',
-            '--no-interaction',
+            'doctrine:schema:update',
+            '--force'
         ], null, ['DATABASE_URL' => $databaseUrl]);
 
         $process->setTimeout(null);
@@ -58,13 +58,21 @@ class TenantDatabaseManager
 
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
-                'Error ejecutando migraciones: '
+                'Error creando/escribiendo esquema: '
                 . $process->getErrorOutput()
                 . ' --- STDOUT: '
                 . $process->getOutput()
             );
         }
 
-        echo "Migraciones ejecutadas correctamente para $dbName\n";
+        echo "Base de datos $dbName creada, migrada y fixtures cargados correctamente.\n";
+    }
+    public function getTenantEntityManager(string $dbName): EntityManagerInterface
+    {
+        $params = $this->defaultEm->getConnection()->getParams();
+        $params['dbname'] = $dbName;
+
+        $tenantConn = DriverManager::getConnection($params);
+        return new EntityManager($tenantConn, $this->defaultEm->getConfiguration());
     }
 }

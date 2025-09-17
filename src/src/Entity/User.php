@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: userRepository::class)]
 #[ORM\Table(name: 'user')]
-class user
+class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +27,12 @@ class user
 
     #[ORM\Column(type: 'string', length: 255)]
     public string $role;
+    #[ORM\Column(type:"boolean")]
+    private bool $isVerified = false;
+    #[ORM\Column(type:"string", length:64, nullable:true)]
+    private ?string $verificationCode = null;
+    #[ORM\Column(type:"datetime", nullable:true)]
+    private ?\DateTimeInterface $verificationCodeExpiresAt = null;
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?company $company = null;
@@ -75,13 +81,41 @@ class user
     {
         $this->role = $role;
     }
-    public function getCompany(): ?Company
+    public function getCompany(): ?company
     {
         return $this->company;
     }
-    public function setCompany(Company $company): void
+    public function setCompany(company $company): void
     {
         $this->company = $company;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+    public function setIsVerified(bool $isVerified): void
+    {
+        $this->isVerified = $isVerified;
+    }
+    public function getVerificationCode(): ?string
+    {
+        return $this->verificationCode;
+    }
+    public function setVerificationCode(string $verificationCode): void
+    {
+        $this->verificationCode = $verificationCode;
+    }
+    public function getVerificationCodeExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->verificationCodeExpiresAt;
+    }
+    public function setVerificationCodeExpiresAt(\DateTimeInterface $verificationCodeExpiresAt): void
+    {
+        $this->verificationCodeExpiresAt = $verificationCodeExpiresAt;
     }
 
 }

@@ -54,7 +54,7 @@ class subscriptionController extends AbstractController
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
-        $response = new JsonResponse(['message' => 'Subscription saved successfully'], 201);
+        $response = new JsonResponse(['message' => 'subscription saved successfully'], 201);
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');

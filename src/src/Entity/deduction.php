@@ -59,7 +59,7 @@ class deduction
         return $this->payroll;
     }
 
-    public function addPayroll(Payroll $payroll): self
+    public function addPayroll(payroll $payroll): self
     {
         if (!$this->payroll->contains($payroll)) {
             $this->payroll->add($payroll);
@@ -68,7 +68,7 @@ class deduction
         return $this;
     }
 
-    public function removePayroll(Payroll $payroll): self
+    public function removePayroll(payroll $payroll): self
     {
         $this->payroll->removeElement($payroll);
         return $this;

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\planRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: plan::class)]
+#[ORM\Entity(repositoryClass: planRepository::class)]
 #[ORM\Table(name: 'plan')]
 class plan
 {
@@ -53,6 +54,14 @@ class plan
     public function getEmployeeLimit(): ?int
     {
         return $this->employeeLimit;
+    }
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+    public function setStatus(?bool $status): void
+    {
+        $this->status = $status;
     }
     public function setEmployeeLimit(int $employeeLimit): void
     {

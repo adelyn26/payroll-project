@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\employee;
+use App\Entity\Employee;
 use App\Repository\employeeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -107,15 +107,16 @@ class employeeController extends AbstractController
 
         if (!$employee) {
             $response = new JsonResponse(['message' => 'Employee not found'], Response::HTTP_NOT_FOUND);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');
         }
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
 
         return new JsonResponse(['message' => 'Employee deleted successfully'], Response::HTTP_OK);
     }
 
-    #[Route('/api/update/{id}', name: 'update_employee', methods: ['PUT'])]
+    #[Route('/api/employee-update/{id}', name: 'update_employee', methods: ['PUT'])]
     public function updateEmployee(Request $request, EntityManagerInterface $entityManager, $id, LoggerInterface $logger): JsonResponse
     {
         $employee = $entityManager->getRepository(employee::class)->find($id);

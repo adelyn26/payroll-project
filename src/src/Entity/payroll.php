@@ -80,7 +80,7 @@ class payroll
     {
         return $this->deductions;
     }
-    public function addDeduction(Deduction $deduction): void
+    public function addDeduction(deduction $deduction): void
     {
         if (!$this->deductions->contains($deduction)) {
             $this->deductions[] = $deduction;
